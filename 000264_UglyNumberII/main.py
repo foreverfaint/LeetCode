@@ -44,19 +44,19 @@ class Solution:
         if n == 1:
             return 1
 
-        m = {1, 2, 3, 5}
+        m = [1, 1, 1]
         i = 2
         k = 1
         while True:
             if k == n:
                 break
 
-            for j in [2, 3, 5]:
+            for idx, j in enumerate([2, 3, 5]):
                 if i % j == 0:
                     t = i // j
-                    if t in m:
+                    if t == m[idx]:
                         k += 1
-                        m.add(i)
+                        m[idx] = i
                     break
             i += 1
         return i - 1
@@ -75,4 +75,4 @@ if __name__ == "__main__":
     # print(sln.nthUglyNumber(8))
     # print(sln.nthUglyNumber(9))
     # print(sln.nthUglyNumber(10))
-    print(sln.nthUglyNumber(421))
+    print(sln.nthUglyNumber2(421))
