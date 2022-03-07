@@ -180,7 +180,7 @@ func (root *TreeNode) toArray() []interface{} {
 }
 
 func main() {
-	fmt.Println(fun(fromArray([]int {1, 2, 3, 3, 4, 4, 5})).toArray())
+	fmt.Println(fun(fromArray([]interface{} {1, 2, 3, 3, 4, 4, 5})).toArray())
 }
 ```
 
