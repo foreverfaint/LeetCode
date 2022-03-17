@@ -1,53 +1,4 @@
-# Boilerplate for Python3
 
-## Basic
-
-```python
-from typing import List
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## ListNode
-
-```python
-from typing import Optional, List
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-    def to_list(self) -> List[int]:
-        if self.next is None:
-            return [self.val]
-        return [self.val] + self.next.to_list()
-
-    @classmethod
-    def from_list(cls, lst: List[int]) -> "ListNode":
-        if lst is None or len(lst) == 0:
-            return None
-        return ListNode(lst[0], cls.from_list(lst[1:]))
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## TreeNode
-
-```python
 from typing import List, Optional
 
 
@@ -95,9 +46,46 @@ class TreeNode:
 
 
 class Solution:
-    pass
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        ans = []
+
+        from queue import Queue
+        q = Queue()
+        q.put_nowait((root, 0))
+
+        last_val = -1
+        last_lvl = -1
+        while not q.empty():
+            first, lvl = q.get_nowait()
+            if lvl != last_lvl:
+                ans.append(last_val)
+
+            last_val = first.val
+            last_lvl = lvl
+
+            if first.left:
+                q.put_nowait((first.left, lvl + 1))
+            if first.right:
+                q.put_nowait((first.right, lvl + 1))
+
+        ans.append(last_val)
+        return ans[1:]
 
 
 if __name__ == "__main__":
     sln = Solution()
-```
+
+    root = TreeNode.from_list([1,2,3,4])
+    print(sln.rightSideView(root))
+
+    root = TreeNode.from_list([1,2,3,None,5,None,4])
+    print(sln.rightSideView(root))
+
+    root = TreeNode.from_list([1,None,3])
+    print(sln.rightSideView(root))
+
+    root = TreeNode.from_list([])
+    print(sln.rightSideView(root))

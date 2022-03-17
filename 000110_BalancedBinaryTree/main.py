@@ -1,53 +1,3 @@
-# Boilerplate for Python3
-
-## Basic
-
-```python
-from typing import List
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## ListNode
-
-```python
-from typing import Optional, List
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-    def to_list(self) -> List[int]:
-        if self.next is None:
-            return [self.val]
-        return [self.val] + self.next.to_list()
-
-    @classmethod
-    def from_list(cls, lst: List[int]) -> "ListNode":
-        if lst is None or len(lst) == 0:
-            return None
-        return ListNode(lst[0], cls.from_list(lst[1:]))
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## TreeNode
-
-```python
 from typing import List, Optional
 
 
@@ -95,9 +45,29 @@ class TreeNode:
 
 
 class Solution:
-    pass
+    def getHeight(self, root):
+        if root is None:
+            return 0, True
+        elif root.left is not None and root.right is not None:
+            h_left, is_balanced_left = self.getHeight(root.left)
+            h_right, is_balanced_right = self.getHeight(root.right)
+            return 1 + max(h_left, h_right), abs(h_left - h_right) <= 1 and is_balanced_left and is_balanced_right
+        elif root.left is not None:
+            h, _ = self.getHeight(root.left)
+            return 1 + h, h <= 1
+        elif root.right is not None:
+            h, _ = self.getHeight(root.right)
+            return 1 + h, h <= 1
+        else:
+            return 1, True
+
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        _, is_balanced = self.getHeight(root)
+        return is_balanced
 
 
 if __name__ == "__main__":
     sln = Solution()
-```
+    print(sln.isBalanced(TreeNode.from_list([3,9,20,None,None,15,7])))
+    print(sln.isBalanced(TreeNode.from_list([1,2,2,3,3,None,None,4,4])))
+    print(sln.isBalanced(TreeNode.from_list([])))

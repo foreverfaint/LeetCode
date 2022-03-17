@@ -1,53 +1,3 @@
-# Boilerplate for Python3
-
-## Basic
-
-```python
-from typing import List
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## ListNode
-
-```python
-from typing import Optional, List
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-    def to_list(self) -> List[int]:
-        if self.next is None:
-            return [self.val]
-        return [self.val] + self.next.to_list()
-
-    @classmethod
-    def from_list(cls, lst: List[int]) -> "ListNode":
-        if lst is None or len(lst) == 0:
-            return None
-        return ListNode(lst[0], cls.from_list(lst[1:]))
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## TreeNode
-
-```python
 from typing import List, Optional
 
 
@@ -94,10 +44,37 @@ class TreeNode:
         return root
 
 
-class Solution:
-    pass
+class BSTIterator:
+    def foo(self, root, q):
+        if not root:
+            return
+        if root.left:
+            self.foo(root.left, q)
+        q.put_nowait(root.val)
+        if root.right:
+            self.foo(root.right, q)
+
+    def __init__(self, root: Optional[TreeNode]):
+        from queue import Queue
+        self.q = Queue()
+        self.foo(root, self.q)
+
+    def next(self) -> int:
+        return self.q.get_nowait()
+        
+    def hasNext(self) -> bool:
+        return not self.q.empty()
 
 
 if __name__ == "__main__":
-    sln = Solution()
-```
+    it = BSTIterator(TreeNode.from_list([7, 3, 15, None, None, 9, 20]))
+    print(it.next())
+    print(it.next())
+    print(it.hasNext())
+    print(it.next())
+    print(it.hasNext())
+    print(it.next())
+    print(it.hasNext())
+    print(it.next())
+    print(it.hasNext())            
+        

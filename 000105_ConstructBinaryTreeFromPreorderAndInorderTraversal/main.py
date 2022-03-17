@@ -1,53 +1,3 @@
-# Boilerplate for Python3
-
-## Basic
-
-```python
-from typing import List
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## ListNode
-
-```python
-from typing import Optional, List
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-    def to_list(self) -> List[int]:
-        if self.next is None:
-            return [self.val]
-        return [self.val] + self.next.to_list()
-
-    @classmethod
-    def from_list(cls, lst: List[int]) -> "ListNode":
-        if lst is None or len(lst) == 0:
-            return None
-        return ListNode(lst[0], cls.from_list(lst[1:]))
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## TreeNode
-
-```python
 from typing import List, Optional
 
 
@@ -95,9 +45,29 @@ class TreeNode:
 
 
 class Solution:
-    pass
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        if not preorder and not inorder:
+            return None
+
+        assert len(preorder) == len(inorder)
+
+        val = preorder[0]
+
+        i = 0
+        while inorder[i] != val and i < len(inorder):
+            i += 1
+
+        left_preorder = preorder[1:1+i]
+        left_inorder = inorder[0:i]
+        right_preorder = preorder[1+i:]
+        right_inorder = inorder[i+1:]
+        return TreeNode(val, left=self.buildTree(left_preorder, left_inorder), right=self.buildTree(right_preorder, right_inorder))
 
 
 if __name__ == "__main__":
     sln = Solution()
-```
+
+    print(sln.buildTree([3,9,20,15,7], [9,3,15,20,7]))
+    print(sln.buildTree([-1], [-1]))
+    print(sln.buildTree([3,9,10], [3,9,10]))
+    print(sln.buildTree([3,9,10], [10,9,3]))

@@ -1,54 +1,6 @@
-# Boilerplate for Python3
-
-## Basic
-
-```python
-from typing import List
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## ListNode
-
-```python
-from typing import Optional, List
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-    def to_list(self) -> List[int]:
-        if self.next is None:
-            return [self.val]
-        return [self.val] + self.next.to_list()
-
-    @classmethod
-    def from_list(cls, lst: List[int]) -> "ListNode":
-        if lst is None or len(lst) == 0:
-            return None
-        return ListNode(lst[0], cls.from_list(lst[1:]))
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## TreeNode
-
-```python
 from typing import List, Optional
+
+from numpy import empty
 
 
 class TreeNode:
@@ -95,9 +47,49 @@ class TreeNode:
 
 
 class Solution:
-    pass
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        result = []
+        if not root:
+            return result
+
+        from collections import deque
+        queue = deque()
+        queue.append((root, 0))
+
+        arr = []
+        pre_lvl = 0
+        while len(queue) > 0:
+            first, lvl = queue.popleft()
+            if pre_lvl != lvl:
+                if pre_lvl % 2 == 1:
+                    arr.reverse()
+                result.append(arr)
+                arr = []
+                pre_lvl = lvl
+
+            arr.append(first.val)
+
+            if first.left:
+                queue.append((first.left, lvl + 1))
+            
+            if first.right:
+                queue.append((first.right, lvl + 1))
+
+        if pre_lvl % 2 == 1:
+            arr.reverse()
+        result.append(arr)
+
+        return result
 
 
 if __name__ == "__main__":
     sln = Solution()
-```
+
+    tree = TreeNode.from_list([3,9,20,None,None,15,7])
+    print(sln.zigzagLevelOrder(tree))
+
+    tree = TreeNode.from_list([1])
+    print(sln.zigzagLevelOrder(tree))
+
+    tree = TreeNode.from_list([])
+    print(sln.zigzagLevelOrder(tree))

@@ -1,53 +1,3 @@
-# Boilerplate for Python3
-
-## Basic
-
-```python
-from typing import List
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## ListNode
-
-```python
-from typing import Optional, List
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-    def to_list(self) -> List[int]:
-        if self.next is None:
-            return [self.val]
-        return [self.val] + self.next.to_list()
-
-    @classmethod
-    def from_list(cls, lst: List[int]) -> "ListNode":
-        if lst is None or len(lst) == 0:
-            return None
-        return ListNode(lst[0], cls.from_list(lst[1:]))
-
-
-class Solution:
-    pass
-
-
-if __name__ == "__main__":
-    sln = Solution()
-```
-
-## TreeNode
-
-```python
 from typing import List, Optional
 
 
@@ -95,9 +45,22 @@ class TreeNode:
 
 
 class Solution:
-    pass
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if root is None:
+            return 0
+        elif root.left is None and root.right is None:
+            return 1
+        elif root.left is None:
+            return 1 + self.minDepth(root.right)
+        elif root.right is None:
+            return 1 + self.minDepth(root.left)
+        else:
+            left = self.minDepth(root.left)
+            right = self.minDepth(root.right)
+            return min(left, right) + 1
 
 
 if __name__ == "__main__":
     sln = Solution()
-```
+    print(sln.minDepth(TreeNode.from_list([3,9,20,None,None,15,7])))
+    print(sln.minDepth(TreeNode.from_list([2,None,3,None,4,None,5,None,6])))
