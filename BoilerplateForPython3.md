@@ -64,7 +64,21 @@ class TreeNode:
         return self.__str__()
 
     def to_list(self):
-        return [self.val] + (self.left.as_list() if self.left else []) + (self.right.as_list() if self.right else [])
+        ans = []
+        from queue import Queue
+        q = Queue()
+        q.put_nowait(self)
+        while not q.empty():
+            first = q.get_nowait()
+            if not first:
+                ans.append(None)    
+                continue
+
+            ans.append(first.val)
+            q.put_nowait(first.left)
+            q.put_nowait(first.right)
+
+        return ans
 
     @classmethod
     def from_list(cls, lst) -> "TreeNode":
