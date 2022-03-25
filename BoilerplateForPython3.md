@@ -94,17 +94,67 @@ class TreeNode:
         while not q.empty():
             r = q.get_nowait()
 
-            if i < l and lst[i]:
+            if i < l and lst[i] is not None:
                 r.left = cls(lst[i])
                 q.put_nowait(r.left)
 
             i += 1
-            if i < l and lst[i]:
+            if i < l and lst[i] is not None:
                 r.right = cls(lst[i])
                 q.put_nowait(r.right)
 
             i += 1
 
+        return root
+
+
+class Solution:
+    pass
+
+
+if __name__ == "__main__":
+    sln = Solution()
+```
+
+## N-ary Tree
+
+```python
+class Node:
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+
+    def __str__(self) -> str:
+        s = str(self.val)
+        if self.children:
+            s += f" (" + ",".join([str(x) for x in self.children]) + ")"
+        return s
+
+    @classmethod
+    def from_list(cls, lst) -> "Node":
+        if not lst:
+            return None
+
+        root = cls(lst[0])
+
+        from collections import deque
+        q = deque()
+        q.append(root)
+
+        i = 1
+        while len(q) > 0:
+            parent = q.popleft()
+            i += 1
+            
+            children = []
+            while i < len(lst) and lst[i] is not None:
+                node = cls(lst[i])
+                children.append(node)
+                q.append(node)
+                i += 1
+
+            parent.children = children
+        
         return root
 
 
