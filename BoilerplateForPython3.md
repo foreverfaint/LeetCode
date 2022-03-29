@@ -119,6 +119,9 @@ if __name__ == "__main__":
 ## N-ary Tree
 
 ```python
+from typing import List
+
+
 class Node:
     def __init__(self, val=None, children=None):
         self.val = val
