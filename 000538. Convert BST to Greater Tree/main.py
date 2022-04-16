@@ -60,21 +60,19 @@ class TreeNode:
 
 class Solution:
     def foo(self, root, acc):
-        old = root.val
-        root.val += acc
-        print(f"{root}, {old} -> {root.val}")
-
         if root.left is None and root.right is None:
-            return
+            root.val += acc
+            return root.val
+        elif root.left is None:
+            root.val += self.foo(root.right, acc)
+            return root.val
+        elif root.right is None:
+            root.val += acc
+            return self.foo(root.left, root.val)
+        else:
+            root.val += self.foo(root.right, acc)
+            return self.foo(root.left, root.val)
 
-        if root.right is not None:
-            self.foo(root.right, 0)
-            old = root.val
-            root.val += root.right.val
-            print(f"{root}, {old} -> {root.val}")
-
-        if root.left is not None:
-            self.foo(root.left, root.val)
 
     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         self.foo(root, 0)
@@ -90,8 +88,11 @@ if __name__ == "__main__":
     # tree = TreeNode.from_list([6,5, 7, None, None, None, 8])
     # print(sln.convertBST(tree).to_list())
 
-    tree = TreeNode.from_list([4,1,6,0,2,5,7,None,None,None,3,None,None,None,8])
-    print(sln.convertBST(tree).to_list())
+    # tree = TreeNode.from_list([4,1,6,0,2,5,7,None,None,None,3,None,None,None,8])
+    # print(sln.convertBST(tree).to_list())
 
     # tree = TreeNode.from_list([0,None,1])
     # print(sln.convertBST(tree).to_list())
+
+    tree = TreeNode.from_list([3,2,4,1])
+    print(sln.convertBST(tree).to_list())
