@@ -14,6 +14,29 @@ if __name__ == "__main__":
     sln = Solution()
 ```
 
+## Data Structure Design
+
+```python
+from typing import List
+
+
+class Solution:
+    pass
+
+
+if __name__ == "__main__":
+    sln = None
+    res = []
+    for i, (cmd, args) in enumerate(zip(
+    )):
+        if i == 0:
+            sln = Solution(*args)
+            res.append(None)
+        else:
+            res.append(eval(f"sln.{cmd}(*{args})"))
+    print(res)
+```
+
 ## ListNode
 
 ```python
